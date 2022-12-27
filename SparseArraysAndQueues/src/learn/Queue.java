@@ -1,3 +1,5 @@
+package learn;
+
 import java.util.Scanner;
 
 public class Queue {
