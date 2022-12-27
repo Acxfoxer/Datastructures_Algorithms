@@ -1,3 +1,5 @@
+package learn;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -75,7 +77,7 @@ public class SparseArrays {
          * 	1.在前面的基础上，将稀疏数组保存到磁盘上，比如 map.data
          *  2.恢复原来的数组时，读取map.data 进行恢复
          */
-        File file = new File("SparseArrays/xs.data");
+        File file = new File("learn.SparseArrays/xs.data");
         FileOutputStream fos = new FileOutputStream(file);
         OutputStreamWriter ow = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         //将稀疏数组写入到文件中,字节流
