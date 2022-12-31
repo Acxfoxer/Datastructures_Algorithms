@@ -11,12 +11,12 @@ public class LinkedList {
                 (如果有这个排名，则添加失败，并给出提示)*/
         //测试一下
         //1.创建节点
-        HeroNode hero = new HeroNode(1,"宋江","及时雨");
+        HeroNode hero1 = new HeroNode(1,"宋江","及时雨");
         HeroNode hero2 = new HeroNode(2,"卢俊义","玉麒麟");
         HeroNode hero3 = new HeroNode(3,"吴用","智多星");
         HeroNode hero4 = new HeroNode(4,"公孙胜","入云龙");
         HeroNode hero5 = new HeroNode(5,"关胜","大刀");
-        HeroNode hero1 = new HeroNode(7,"鲁智深","大嘴");
+        HeroNode hero6 = new HeroNode(6,"鲁智深","大嘴");
         //创建一个链表
         UnilateralLinkedList uniLinkedList = new UnilateralLinkedList();
 
@@ -29,8 +29,8 @@ public class LinkedList {
         uniLinkedList.add(hero7);
         uniLinkedList.list();*/
         //按照顺序添加
-        uniLinkedList.addByOrder(hero);
         uniLinkedList.addByOrder(hero1);
+        uniLinkedList.addByOrder(hero6);
         uniLinkedList.addByOrder(hero2);
         uniLinkedList.addByOrder(hero3);
         uniLinkedList.addByOrder(hero4);
@@ -38,15 +38,15 @@ public class LinkedList {
         uniLinkedList.list();
         System.out.println("-------------------------------------");
         //修改指定节点信息
-        HeroNode hero6=new HeroNode(6,"张三","李四");
-        HeroNode hero8=new HeroNode(7,"王五","炖鸡");
-        uniLinkedList.addByOrder(hero6);
+        HeroNode hero9=new HeroNode(9,"张三","李四");
+        HeroNode hero8=new HeroNode(8,"王五","炖鸡");
+        uniLinkedList.addByOrder(hero9);
         uniLinkedList.update(hero8);
         uniLinkedList.list();
         System.out.println("-------------------------------------");
         //删除指定节点
-        HeroNode hero9=new HeroNode(7,"","");
-        uniLinkedList.delete(hero9);
+        HeroNode hero7=new HeroNode(7,"","");
+        uniLinkedList.delete(hero7);
         uniLinkedList.list();
         System.out.println("----------------------------------------");
         //获取头jiedian
@@ -54,6 +54,28 @@ public class LinkedList {
         //调用方法查询有效节点数
         int nodeCount = getNodeCount(head);
         System.out.printf("链表有效节点个数为%d",nodeCount);
+        System.out.println("-------------------------------------------------------");
+        //测试合并两个有序单链表(带头节点)
+        UnilateralLinkedList uniLinkedList1 = new UnilateralLinkedList();
+        UnilateralLinkedList uniLinkedList2 = new UnilateralLinkedList();
+        uniLinkedList1.addByOrder(hero9);
+        uniLinkedList1.addByOrder(hero7);
+        uniLinkedList1.addByOrder(hero8);
+        uniLinkedList1.addByOrder(hero3);
+        uniLinkedList1.addByOrder(hero5);
+        System.out.println("uniLinkedList1为:");
+        uniLinkedList1.list();
+        uniLinkedList2.addByOrder(hero2);
+        uniLinkedList2.addByOrder(hero4);
+        uniLinkedList2.addByOrder(hero6);
+        uniLinkedList2.addByOrder(hero1);
+        System.out.println("uniLinkedList2为:");
+        uniLinkedList2.list();
+
+        System.out.println("合并后的链表为:");
+        UnilateralLinkedList unilateralLinkedList = uniLinkedList1.mergeTwoLinkedList(uniLinkedList1, uniLinkedList2);
+        unilateralLinkedList.list();
+
     }
     //查找单链表中有效节点个数,传入头节点
     public static int getNodeCount(HeroNode headNode){
@@ -68,11 +90,21 @@ public class LinkedList {
         }
         return count;
     }
+
 }
 
 //定义一个单项链表(带头节点)类
 class UnilateralLinkedList{
     private HeroNode headNode = new HeroNode(0, "", "");
+
+    public UnilateralLinkedList(HeroNode node) {
+        this.headNode =node;
+    }
+
+    public UnilateralLinkedList() {
+        headNode=new HeroNode();
+    }
+
     //返回头节点
     public HeroNode getHead() {
         return headNode;
@@ -102,7 +134,10 @@ class UnilateralLinkedList{
         }
         //由于头节点head不能动,所以需要一个辅助变量 temp
         HeroNode linkedNode = headNode;
-        while (linkedNode != null) {
+        while (true) {
+            if(linkedNode == null){
+                break;
+            }
             //判断是否到链表的最后
             //如果不为空，输出节点的信息
             System.out.println(linkedNode);
@@ -115,7 +150,10 @@ class UnilateralLinkedList{
         HeroNode linkedNode = headNode;
         boolean add_flag =false ;//用来判断是否存在相同排名,默认为false;
         //用循环根据id判断插入位置
-        while (linkedNode.next!=null){
+        while (true){
+            if(linkedNode.next==null){
+                break;
+            }
             //存在跟插入id相同,则提示无法插入
             if(linkedNode.next.id== headNode.id){
                 add_flag=true;
@@ -187,7 +225,36 @@ class UnilateralLinkedList{
             System.out.printf("无法删除id为%d的节点,因为其不存在",heroNode.id);
         }
     }
-    //合并两个有序链表,合并后的链表依然有序
+
+
+    //合并两个有序的单链表，合并之后的链表依然有序【课后练习.】
+    public UnilateralLinkedList mergeTwoLinkedList(UnilateralLinkedList list1 ,UnilateralLinkedList list2){
+        if(list1.headNode.next==null){
+            return list2;
+        }else if(list2.headNode.next==null){
+            return list1;
+        }
+        HeroNode newNode= new HeroNode();
+        HeroNode node = newNode;
+        HeroNode node1 = list1.headNode.next;
+        HeroNode node2 = list2.headNode.next;
+        while (node1!=null&&node2!=null){
+            if(node1.id<node2.id){
+                node.next=node1;
+                node1=node1.next;
+            }else {
+                node.next=node2;
+                node2=node2.next;
+            }
+            node=node.next;
+        }
+        if(node1 == null){
+            node.next=node2;
+        }else{
+            node.next=node1;
+        }
+        return new UnilateralLinkedList(newNode);
+    }
 }
 //定义一个HeroNode,每个HeroNode对象就是一个节点
 class HeroNode {
@@ -203,9 +270,12 @@ class HeroNode {
         this.nickName = nickName;
     }
 
+    public HeroNode() {
+    }
+
     //为了显示方便，重写toString方法
     @Override
     public String toString() {
-        return "SingleLinkedList.HeroNode [id=" + id + ", name=" + name + ", nickName=" + nickName + "]";
+        return "UnilateralLinkedList.HeroNode [id=" + id + ", name=" + name + ", nickName=" + nickName + "]";
     }
 }
