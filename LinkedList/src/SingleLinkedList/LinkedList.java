@@ -236,6 +236,7 @@ class UnilateralLinkedList{
         }
         HeroNode newNode= new HeroNode();
         HeroNode node = newNode;
+        //newNode赋值给node后操作的是同一个内存空间
         HeroNode node1 = list1.headNode.next;
         HeroNode node2 = list2.headNode.next;
         while (node1!=null&&node2!=null){
