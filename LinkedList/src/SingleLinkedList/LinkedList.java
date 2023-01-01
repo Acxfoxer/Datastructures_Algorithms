@@ -21,12 +21,12 @@ public class LinkedList {
         UnilateralLinkedList uniLinkedList = new UnilateralLinkedList();
 
         //添加数据到链表
-        /*uniLinkedList.add(hero);
-        uniLinkedList.add(hero2);
-        uniLinkedList.add(hero3);
-        uniLinkedList.add(hero4);
-        uniLinkedList.add(hero5);
-        uniLinkedList.add(hero7);
+        /*uniLinkedList.addLast(hero);
+        uniLinkedList.addLast(hero2);
+        uniLinkedList.addLast(hero3);
+        uniLinkedList.addLast(hero4);
+        uniLinkedList.addLast(hero5);
+        uniLinkedList.addLast(hero7);
         uniLinkedList.list();*/
         //按照顺序添加
         uniLinkedList.addByOrder(hero1);
