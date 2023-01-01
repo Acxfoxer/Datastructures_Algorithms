@@ -234,7 +234,7 @@ class UnilateralLinkedList{
         }else if(list2.headNode.next==null){
             return list1;
         }
-        HeroNode newNode= new HeroNode();
+        HeroNode newNode= new HeroNode();//newNode作用是为了拿到最后的头节点
         HeroNode node = newNode;
         //newNode赋值给node后操作的是同一个内存空间
         HeroNode node1 = list1.headNode.next;
@@ -256,6 +256,8 @@ class UnilateralLinkedList{
         }
         return new UnilateralLinkedList(newNode);
     }
+
+
 }
 //定义一个HeroNode,每个HeroNode对象就是一个节点
 class HeroNode {
