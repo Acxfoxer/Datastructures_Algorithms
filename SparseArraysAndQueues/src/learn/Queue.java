@@ -169,7 +169,7 @@ class CircleArray {
             System.out.println("队列里面数据为空");
             return;
         }
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < front+size(); i++) {
             System.out.printf("arr[%d]=%d\n", i % maxSize, arr[i % maxSize]);
         }
     }

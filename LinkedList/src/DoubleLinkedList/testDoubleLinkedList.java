@@ -6,29 +6,27 @@ public class testDoubleLinkedList {
     public static void main(String[] args) {
         DoubleLinkedList db = new DoubleLinkedList();
         DoubleLinkedList db1 = new DoubleLinkedList();
-        ListNode node = new ListNode(0);
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(2);
-        ListNode node3 = new ListNode(3);
-        ListNode node4 = new ListNode(4);
-        db.addFirst(node);
-        db.addFirst(node1);
-        db.addFirst(node2);
-        db.addFirst(node3);
-        db.addFirst(node4);
+        db.addFirst(0);
+        db.addFirst(1);
+        db.addFirst(2);
+        db.addFirst(3);
+        db.addFirst(4);
+        //删除索引为3的节点
+        boolean removeByIndex = db.remove(3);
+        if(removeByIndex){
+            System.out.println("删除索引为3的节点删除成功");
+        }
+        boolean removeByValue = db.removeByValue(2);
+        if(removeByValue){
+            System.out.println("根据val值删除成功");
+        }
         db.list();
         System.out.println("--------------------------");
-        db1.addLast(node);
-        db1.addLast(node1);
-        db1.addLast(node2);
-        db1.addLast(node3);
-        db1.addLast(node4);
-        db1.list();
-        try {
-            db1.removeByIndex(4);
-        } catch (Exception e) {
-            System.out.println("超出边界");
-        }
+        db1.addLast(1);
+        db1.addLast(2);
+        db1.addLast(3);
+        db1.addLast(4);
+        db1.addLast(5);
         db1.list();
     }
 }
@@ -92,7 +90,7 @@ class DoubleLinkedList{
         if(headNode==null){
             headNode=tail=node;
         }else {
-            //创建一个指针指向双向链表尾节点
+          //创建一个指针指向双向链表尾节点
             //ListNode newHeadNode = this.headNode;
             headNode.pre=node;
             node.next=headNode;
@@ -100,18 +98,53 @@ class DoubleLinkedList{
         }
         size++;
     }
-    //根据下标删除元素
-    public void removeByIndex(int index){
-        if(index<0||index>size-1){
-            throw new IndexOutOfBoundsException("超出边界");
+    //根据索引添加
+    public void add(int index,Object obj){
+        if(checkIndex(index)){
+            if(index==0){
+                addFirst(obj);
+            }else if(index==size){
+                addLast(obj);
+            }else {
+                ListNode node = getNode(index);
+                ListNode newNode = new ListNode(obj);
+                node.pre.next=newNode;
+                node.pre =newNode;
+                size++;
+            }
         }
-        ListNode node=new ListNode(index);
-        removeNode(node);
+    }
+    //判断索引越界
+    public boolean checkIndex(int index){
+        return index >= 0 && index <= size - 1;
+    }
+
+    /**获取当前索引的节点
+     * 二分法
+     * @param index 要获取的索引的节点
+     */
+    public ListNode getNode(int index){
+        //为了提高效率，可以先让索引值i与中间值比较，再确定是从前到后遍历还是从后到前遍历
+        ListNode node;
+        if(index<(this.size>>1)){
+            //从前向后遍历
+            node = this.headNode;
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
+        }else{
+            //从后遍历
+            node = this.tail;
+            for (int i = this.size-1; i >index; i--) {
+                node = node.pre;
+            }
+        }
+        return node;
     }
     /*删除当前双向列表的节点
     * 分治法
     * */
-    public void removeNode(ListNode node){
+    public void unlink(ListNode node){
         ListNode successor = node.next;
         ListNode pre = node.pre;
         //先处理node前面的内容
@@ -125,36 +158,57 @@ class DoubleLinkedList{
             tail=pre;
 
         }else {
-            successor.pre=pre;
+           successor.pre=pre;
             node.next=null;
         }
         size--;
     }
+    //根据索引删除
+    public boolean remove(int index){
+        //先检查索引是否越界
+        if(checkIndex(index)){
+            ListNode p = this.headNode;
+            //遍历找到要删除的结点
+            for (int j = 0; j < index; j++) {
+                p = p.next;
+            }
+            unlink(p);
+        }
+        return true;
+    }
 
-    // 删除节点
+    // 根据节点数据数据删除某一节点
     // 思路
-    // 1.由于头节点head不能动,所以需要一个辅助变量 temp来找到待删除节点的前一个节点
+    // 1.由于头节点head不能动,所以需要一个辅助节点node来找到待删除节点的前一个节点
     // 2.说明我们在比较时，是temp.next.value 和 需要删除的节点的value比较
-    public void del(Object val) {
-        ListNode temp = headNode;
-        boolean flag = false; // 标志是否找到带删除的节点
-        while (true) {
-            if (temp.next == null) { // 已经到链表的最后
-                break;
+    public boolean removeByValue(Object val) {
+        //先判断是否为null
+        ListNode node = this.headNode;
+        if (val == null) {
+            while (node != null) {
+                if (node.data == null) {
+                    //如果找到结点就调用删除结点的方法
+                    unlink(node);
+                    return true;
+                }
+                node = node.next;
             }
-            if (temp.next.data == val) { // 找到了带删除的节点的前一个节点
-                flag = true;
-                break;
-            }
-            temp = temp.next; // temp后移，遍历
-        }
-        // 判断flag
-        if (flag) { // 说明找到了
-            // 可以删除
-            temp.next = temp.next.next;
         } else {
-            System.out.println("要删除的节点"+val+"不存在");
+            while (node != null) {
+                if (node.data.equals(val)) {
+                    //如果找到结点就调用删除结点的方法
+                    unlink(node);
+                    return true;
+                }
+                node = node.next;
+            }
         }
+        return false;
+    }
+
+    //替换节点
+    public void replaceNode(){
+
     }
 }
 

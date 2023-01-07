@@ -134,10 +134,7 @@ class UnilateralLinkedList{
         }
         //由于头节点head不能动,所以需要一个辅助变量 temp
         HeroNode linkedNode = headNode;
-        while (true) {
-            if(linkedNode == null){
-                break;
-            }
+        while (linkedNode != null) {
             //判断是否到链表的最后
             //如果不为空，输出节点的信息
             System.out.println(linkedNode);
