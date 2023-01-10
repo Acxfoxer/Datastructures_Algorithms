@@ -1,9 +1,11 @@
+package learn;
+
 import java.util.Scanner;
 
 public class Queue {
     public static void main(String[] args) {
         //数组模仿队列
-        ArrayQueue arrayQueue = new ArrayQueue(3);
+        //ArrayQueue arrayQueue = new ArrayQueue(3);
         CircleArray circleArray = new CircleArray(5);
         Scanner sc = new Scanner(System.in);
         IO:while (true){
@@ -139,7 +141,10 @@ class CircleArray {
     //判断队列是否存满
     public boolean isFull(){
         //模拟环形数列,是否存满的条件就是real的下一个位置是不是又回到了front,具体代码逻辑如下
-        return (rear+1)%maxSize==front;
+        if(isEmpty()){
+            return false;
+        }
+        return rear%maxSize==front;
     }
     //判断队列是否为空
     public boolean isEmpty(){
@@ -152,7 +157,7 @@ class CircleArray {
             return;
         }
         arr[rear]=n;
-        rear = (rear + 1) % maxSize; // 将 rear 后移, 这里必须考虑取模
+        rear ++; // 将 rear 后移, 这里必须考虑取模
     }
     //队列取出元素
     public int getQueue(){
@@ -160,7 +165,7 @@ class CircleArray {
             throw new RuntimeException("队列为空,无法取出数据");
         }
         int num = arr[front];
-        front=(front+1)%maxSize;
+        front++;
         return num;
     }
     //显示队列所有元素
@@ -182,6 +187,6 @@ class CircleArray {
     }
     // 求出当前队列有效数据的个数
     public int size() {
-        return (rear + maxSize - front) % maxSize;
+        return rear;
     }
 }

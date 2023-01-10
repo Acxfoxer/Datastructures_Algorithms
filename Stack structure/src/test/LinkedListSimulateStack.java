@@ -9,18 +9,17 @@ public class LinkedListSimulateStack {
         list.traverseList();
         System.out.println("----------------");
         Integer peak = (Integer) list.peak();
-        System.out.println("最顶部的为:"+peak);
+        System.out.println("顶部数据为:"+peak);
         Integer pop = (Integer) list.pop();
         Integer pop1 = (Integer) list.pop();
         System.out.println(pop+"出栈");
         System.out.println(pop1+"出栈");
 
     }
-
 }
 //链表模拟栈的pop peak push功能
 class LinkedList{
-    private ListNode first;//头节点
+    ListNode first;//头节点
 
     //模拟栈的push
     public void push(Object data){
@@ -36,7 +35,7 @@ class LinkedList{
            node.next=listNode;
        }
     }
-    //遍历方法
+    //遍历方法,栈顶到栈尾
     public void traverseList(){
         isEmpty();
         ListNode node = first;
@@ -45,6 +44,7 @@ class LinkedList{
             node=node.next;
         }
     }
+
     //模拟栈的peak,
     public Object peak(){
         isEmpty();
