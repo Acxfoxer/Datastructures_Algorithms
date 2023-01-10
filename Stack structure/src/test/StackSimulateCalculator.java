@@ -14,7 +14,7 @@ public class StackSimulateCalculator {
         //创建工具类对象
         Utils utils = new Utils();
     //实现一个计算器,式子如String str = 75-42/2+3*5-22-15+1,使用栈的思路,这不考虑小括号
-        String str = "75-42/2+3*5-22-15+1";
+        String str = "75-42/2+1";
         //创建符号栈,跟数字栈
         ArrayStack operStack = new ArrayStack(15);
         ArrayStack numStack = new ArrayStack(15);
@@ -34,14 +34,10 @@ public class StackSimulateCalculator {
             ch = chars[index];
             //判断第一位是不是操作符
             if(utils.isOperator(ch)){
-                //如果索引为0,0压入数字栈
-                if(index==0){
-                    numStack.push(0);
-                }
                 //先判断符号栈是否为空
                 if(!operStack.isEmpty()){
                     //不为空,则判断符号栈中栈顶符号与将要入栈符号优先级
-                    if(utils.priority(ch)>= operStack.peek()){
+                    if(utils.priority(ch)>= utils.priority(operStack.peek())){
                         //将要入栈的大于栈顶则入栈
                         operStack.push(ch);
                     }else {
@@ -53,6 +49,7 @@ public class StackSimulateCalculator {
                         result =utils.cal(first,last,oper);
                         //计算完毕的结果再入数字栈
                         numStack.push(result);
+                        operStack.push(ch);
                     }
                 }
                 else {
